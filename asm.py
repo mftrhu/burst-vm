@@ -6,7 +6,7 @@ asm.py
 Simple assembler for the burst virtual machine.
 """
 
-test = "main JUMP :sum3 ADD ADD RET :add3 3 ADD RET :main sum3 CALL HALT"
+test = "main JUMP :sum3 ADD ADD RET :add3 3 ADD RET :main 1 2 3 sum3 CALL add3 CALL HALT"
 
 instructions = {
     "NOP": 0,
@@ -74,12 +74,12 @@ def assembler(text):
             if instr:
                 out.append(instr)
                 instr = n = 0
-            out.append(int(token))
+            out.append(1 << 15 | int(token))
         elif token.islower():
             if instr:
                 out.append(instr)
                 instr = n = 0
-            out.append(labels[token])
+            out.append(1 << 15 | labels[token])
         elif token.isupper():
             if n > 3 or token in ("JUMP", "JZ", "CALL", "RET") and not n == 2:
                 if instr:
