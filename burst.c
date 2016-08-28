@@ -40,6 +40,14 @@ void execute(uint8_t instruction) {
       data_push(a);
       data_push(b);
       break;
+    case PEEK:
+      a = data_pop();
+      if (a > DP) {
+        printf("Error: stack underflow.\n");
+      } else {
+        data_push(data_stack[DP - a]);
+      }
+      break;
     case HALT:
       running = false;
       break;
