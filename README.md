@@ -13,6 +13,7 @@ A 16-bit stack-based virtual machine that works with packed instructions. It fea
 ### Instructions
 
 |      | Mnemonic |
+| ---- | -------- |
 | 0x00 | NOP      |
 | 0x01 | DROP     |
 | 0x02 | SWAP     |
