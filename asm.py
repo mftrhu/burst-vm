@@ -29,13 +29,16 @@ def assembler(text):
             position += 1
             labels[token[1:]] = position
         elif token.isdigit():
+            n = 0
             position += 1
         elif token.islower():
+            n = 0
             position += 1
         elif token.isupper():
-            if n > 3:
-                position += 1
-                n = 0
+            if n > 3 or token in ("JUMP", "JZ", "CALL", "RET"):
+                if n:
+                    position += 1
+                    n = 0
             n += 1
     # Second pass
     out = []
@@ -57,14 +60,16 @@ def assembler(text):
                 instr = n = 0
             out.append(labels[token])
         elif token.isupper():
-            if n > 3:
-                out.append(instr)
-                instr = n = 0
+            if n > 3 or token in ("JUMP", "JZ", "CALL", "RET"):
+                #print(n, token)
+                if instr:
+                    out.append(instr)
+                    instr = n = 0
             instr = instr << 5 | instructions[token]
             n += 1
     if instr:
         out.append(instr)
-    #print(labels)
+    print(labels)
     return out
 
 if __name__ == "__main__":
