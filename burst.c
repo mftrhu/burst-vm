@@ -2,6 +2,35 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/* Instructions definitions */
+#define NOP 0
+#define DROP 1
+#define SWAP 2
+#define ROT 3
+#define DUP 4
+#define PEEK 5
+#define ADD 6
+#define SUB 7
+#define MUL 8
+#define DIV 9
+#define MOD 10
+#define NEG 11
+#define AND 12
+#define OR 13
+#define XOR 14
+#define NOT 15
+#define SHR 16
+#define SHL 17
+#define LOAD 18
+#define STOR 19
+#define LOADB 20
+#define STORB 21
+#define JUMP 22
+#define CALL 23
+#define RET 24
+#define HALT 31
+
+/* Constants definition */
 #define STACK_SIZE 256
 #define MEMORY_SIZE 64 * 1024
 
@@ -9,14 +38,6 @@ bool running = true;
 uint8_t memory[MEMORY_SIZE], DP=0, CP=0;
 uint16_t PC = 0, IR, data_stack[STACK_SIZE], call_stack[STACK_SIZE];
 uint64_t cycles = 0;
-
-#define NOP 0
-#define DROP 1
-#define SWAP 2
-#define ROT 3
-#define DUP 4
-#define PEEK 5
-#define HALT 31
 
 void data_push(uint16_t data) {
   data_stack[DP++] = data;
@@ -69,8 +90,7 @@ void cycle() {
 }
 
 int main(int argc, char const *argv[]) {
-  //Debug: Pokes an HALT at the last memory location
-  memory[MEMORY_SIZE-1] = 0x001f; 
+  memory[MEMORY_SIZE-1] = HALT; 
   while (running) {
     cycle();
   }
