@@ -35,7 +35,7 @@ def assembler(text):
             n = 0
             position += 1
         elif token.isupper():
-            if n > 3 or token in ("JUMP", "JZ", "CALL", "RET"):
+            if n > 3 or token in ("JUMP", "JZ", "CALL", "RET") and not n == 2:
                 if n:
                     position += 1
                     n = 0
@@ -60,8 +60,7 @@ def assembler(text):
                 instr = n = 0
             out.append(labels[token])
         elif token.isupper():
-            if n > 3 or token in ("JUMP", "JZ", "CALL", "RET"):
-                #print(n, token)
+            if n > 3 or token in ("JUMP", "JZ", "CALL", "RET") and not n == 2:
                 if instr:
                     out.append(instr)
                     instr = n = 0
