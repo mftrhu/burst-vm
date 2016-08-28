@@ -26,8 +26,9 @@
 #define LOADB 20
 #define STORB 21
 #define JUMP 22
-#define CALL 23
-#define RET 24
+#define JZ 23
+#define CALL 24
+#define RET 25
 #define HALT 31
 
 /* Constants definition */
