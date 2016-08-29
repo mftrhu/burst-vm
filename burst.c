@@ -150,9 +150,11 @@ void cycle() {
   IR = memory[PC++] << 8 | memory[PC++];
   //printf("PC: %04X IR: %04X\n", PC, IR);
   if (IR >> 15 == 1) {
+    //printf("P %04X\n--\n", IR & 0x7fff);
     data_push(IR & 0x7fff);
   } else {
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 2; i >= 0; --i) {
+      //printf("%02X \n", (IR >> (5 * i)) & 0x1f);
       execute((IR >> (5 * i)) & 0x1f);
     }
   }
