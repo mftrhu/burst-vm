@@ -56,6 +56,18 @@ void execute(uint8_t instruction) {
     case DROP:
       data_pop();
       break;
+    case ROT:
+      c = data_pop();
+      b = data_pop();
+      a = data_pop();
+      data_push(b);
+      data_push(a);
+      data_push(c);
+      break;
+    case DUP:
+      a = data_stack[DP];
+      data_push(a);
+      break;
     case SWAP:
       a = data_pop();
       b = data_pop();
@@ -69,6 +81,35 @@ void execute(uint8_t instruction) {
       } else {
         data_push(data_stack[DP - a]);
       }
+      break;
+    case ADD:
+      b = data_pop();
+      a = data_pop();
+      data_push(a + b);
+      break;
+    case SUB:
+      b = data_pop();
+      a = data_pop();
+      data_push(a - b);
+      break;
+    case MUL:
+      b = data_pop();
+      a = data_pop();
+      data_push(a * b);
+      break;
+    case DIV:
+      b = data_pop();
+      a = data_pop();
+      data_push(a / b);
+      break;
+    case MOD:
+      b = data_pop();
+      a = data_pop();
+      data_push(a % b);
+      break;
+    case NEG:
+      a = data_pop();
+      data_push(-a);
       break;
     case HALT:
       running = false;

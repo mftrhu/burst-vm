@@ -6,8 +6,6 @@ asm.py
 Simple assembler for the burst virtual machine.
 """
 
-test = "main JUMP :sum3 ADD ADD RET :add3 3 ADD RET :main 1 2 3 sum3 CALL add3 CALL HALT"
-
 instructions = {
     "NOP": 0,
     "DROP": 1,
@@ -91,6 +89,8 @@ def assembler(text):
         out.append(instr)
     print(labels)
     return out
+
+test = "main JUMP :sum3 ADD ADD RET :add3 3 ADD RET :main 1 2 3 sum3 CALL add3 CALL HALT"
 
 if __name__ == "__main__":
     _ = assembler(test)
