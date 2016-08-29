@@ -47,7 +47,7 @@ def assembler(text):
         if token.startswith(":"):
             n = 0
             position += 1
-            labels[token[1:]] = position
+            labels[token[1:]] = position * 2
         elif token.isdigit():
             n = 0
             position += 1

@@ -46,7 +46,15 @@ void data_push(uint16_t data) {
 }
 
 uint16_t data_pop() {
-  return data_stack[DP--];
+  return data_stack[--DP];
+}
+
+void call_push(uint16_t data) {
+  call_stack[CP++] = data;
+}
+
+uint16_t call_pop() {
+  return call_stack[--CP];
 }
 
 void execute(uint8_t instruction) {
@@ -112,6 +120,23 @@ void execute(uint8_t instruction) {
       a = data_pop();
       data_push(-a);
       break;
+    case JUMP:
+      PC = data_pop();
+      break;
+    case JZ:
+      a = data_pop();
+      b = data_pop();
+      if (a == 0) {
+        PC = b;
+      }
+      break;
+    case CALL:
+      call_push(PC);
+      PC = data_pop();
+      break;
+    case RET:
+      PC = call_pop();
+      break;
     case HALT:
       running = false;
       break;
@@ -123,6 +148,7 @@ void execute(uint8_t instruction) {
 
 void cycle() {
   IR = memory[PC++] << 8 | memory[PC++];
+  // printf("PC: %04X IR: %04X\n", PC, IR);
   if (IR >> 15 == 1) {
     data_push(IR & 0x7fff);
   } else {
