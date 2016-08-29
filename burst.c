@@ -42,19 +42,19 @@ uint16_t PC = 0, IR, data_stack[STACK_SIZE], call_stack[STACK_SIZE];
 uint64_t cycles = 0;
 
 void data_push(uint16_t data) {
-  data_stack[DP++] = data;
+  data_stack[++DP] = data;
 }
 
 uint16_t data_pop() {
-  return data_stack[--DP];
+  return data_stack[DP--];
 }
 
 void call_push(uint16_t data) {
-  call_stack[CP++] = data;
+  call_stack[++CP] = data;
 }
 
 uint16_t call_pop() {
-  return call_stack[--CP];
+  return call_stack[CP--];
 }
 
 void execute(uint8_t instruction) {
@@ -148,7 +148,7 @@ void execute(uint8_t instruction) {
 
 void cycle() {
   IR = memory[PC++] << 8 | memory[PC++];
-  // printf("PC: %04X IR: %04X\n", PC, IR);
+  //printf("PC: %04X IR: %04X\n", PC, IR);
   if (IR >> 15 == 1) {
     data_push(IR & 0x7fff);
   } else {
