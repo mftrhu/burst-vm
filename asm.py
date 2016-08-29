@@ -5,6 +5,7 @@ asm.py
 
 Simple assembler for the burst virtual machine.
 """
+import sys
 
 instructions = {
     "NOP": 0,
@@ -90,9 +91,25 @@ def assembler(text):
     print(labels)
     return out
 
-test = "main JUMP :sum3 ADD ADD RET :add3 3 ADD RET :main 1 2 3 sum3 CALL add3 CALL HALT"
+def to_binary(word_stream):
+    output = bytearray()
+    for word in word_stream:
+        output.append((word >> 8) & 0xFF)
+        output.append(word & 0xFF)
+    return output
+
+#test = "main JUMP :sum3 ADD ADD RET :add3 3 ADD RET :main 1 2 3 sum3 CALL add3 CALL HALT"
 
 if __name__ == "__main__":
-    _ = assembler(test)
-    for i, instr in enumerate(_):
-        print("%04d: %04X %016s" % (i, instr, bin(instr)[2:]))
+    if len(sys.argv) < 2:
+        print("Usage: {0} INFILE OUTFILE".format(sys.argv[0]))
+        sys.exit(-1)
+    infile = sys.argv[1]
+    outfile = sys.argv[2]
+    with open(infile, "r") as assembly:
+        with open(outfile, "wb") as output:
+            output.write(to_binary(assembler(assembly.read(-1))))
+            #_ = assembler(test)
+    #for i, instr in enumerate(_):
+    #    print("%04d: %04X %16s" % (i, instr, bin(instr)[2:]))
+    #print(to_binary(_))

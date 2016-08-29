@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 /* Instructions definitions */
@@ -132,10 +133,30 @@ void cycle() {
 }
 
 int main(int argc, char const *argv[]) {
-  memory[MEMORY_SIZE-1] = HALT; 
+  if (argc < 2) {
+    printf("Usage: %s INFILE\n", argv[0]);
+    exit(2);
+  } else {
+    FILE *fp;
+    fp = fopen(argv[1], "rb");
+    if (fp == NULL) {
+      fprintf(stderr, "Can't open file %s.\n", argv[1]);
+      exit(1);
+    }
+    int c, mp = 0;
+    while ((c = fgetc(fp)) != EOF) {
+      memory[mp++] = c;
+    }
+    if (ferror(fp)) {
+      fprintf(stderr, "I/O error while reading file.\n");
+      exit(1);
+    }
+    fclose(fp);
+  }
   while (running) {
     cycle();
   }
   printf("Cycles: %ld\n", cycles);
+  printf("Topstack: %d\n", data_stack[DP]);
   return 0;
 }
